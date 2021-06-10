@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+
+
+	<div >
+        <ul id="box">
+        	
+        </ul>
+	</div>
+
+
+	<script>
+		
+		var users = [
+		    {
+		    	id:1,
+		    	name:'tuetran'
+		    },
+		     {
+		    	id:2,
+		    	name:'ngapham'
+		    },
+		     {
+		    	id:3,
+		    	name:'dungvo'
+		    },
+		]
+
+		var comments=[
+				{
+					id:1,
+					userId:1,
+					content:'will you marry me ?'
+				},
+				{
+					id:2,
+					userId:2,
+					content:'yes , i love you so much forever ?'
+				},
+		]
+
+
+
+		function getUsersById(usersId){
+					return new Promise(function(resolve){
+						var result = users.filter(function(user){
+							return usersId.includes(user.id);
+						});
+							setTimeout(function(){
+								resolve(result);
+							},1000)
+					})
+				}
+
+
+
+
+		function getComments(){
+			return new Promise(function(resolve){
+					setTimeout(function(){
+						resolve(comments)
+					},1000)
+			})
+		}
+
+		getComments().then(function(comments){
+
+			 	var usersId = comments.map(function(comment){
+			 		return comment.userId;
+			 	})
+			 	return getUsersById(usersId).then(function(users){
+			 		return {
+			 			users:users,
+			 			comments:comments,
+			 		}
+			 	})
+		}).then(function(data){
+
+			var block = document.getElementById('box');
+			var html='';
+
+
+			data.comments.forEach(function(comment){
+				var user = users.find(function(user){
+					return user.id === comment.userId
+				});
+				html+= `<li>${user.name} :  ${comment.content}</li>`
+				
+			})
+			block.innerHTML = html;
+		})
+
+		
+
+	  const varies = new Promise((resolve,reject)=>{
+	  	    resolve(1)
+	  });
+
+     
+     varies.then(function(data){
+     	setTimeout(function(){
+     		console.log(data);
+     	},1000)
+     	return 2
+     }).then(function(data){
+     	setTimeout(function(){
+     		console.log(data);
+     	},1000)
+     	return 3
+     }).then(function(data){
+     	setTimeout(function(){
+     		console.log(data);
+     	},1000)
+
+     })
+
+
+
+
+
+
+	</script>
+</body>
+</html>
